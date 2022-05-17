@@ -79,5 +79,5 @@ install(DIRECTORY ${INCLUDE_PATH} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(EXPORT SpiceConfig DESTINATION share/Spice/cmake)
 
 # This makes the project importable from the build directory
-export(TARGETS Spice NAMESPACE Spice FILE SpiceConfig.cmake)
+export(TARGETS Spice NAMESPACE Spice:: FILE SpiceConfig.cmake)
 
