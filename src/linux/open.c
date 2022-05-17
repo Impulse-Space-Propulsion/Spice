@@ -77,7 +77,7 @@
 #ifdef KR_headers
 extern char *malloc();
 #ifdef NON_ANSI_STDIO
-extern char *mktemp();
+extern char *mkdtemp();
 #endif
 extern integer f_clos();
 #else
@@ -324,7 +324,7 @@ static void
 #ifdef NON_ANSI_STDIO
 
       (void) strcpy(buf,"tmp.FXXXXXX");
-      (void) mktemp(buf);
+      (void) mkdtemp(buf);
       goto replace;
 
 #else
