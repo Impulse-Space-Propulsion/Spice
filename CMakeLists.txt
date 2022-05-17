@@ -76,8 +76,9 @@ install(DIRECTORY ${INCLUDE_PATH} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 # This makes the project importable from the install directory
 # Put config file in per-project dir (name MUST match), can also
 # just go into 'cmake'.
-install(EXPORT SpiceConfig DESTINATION share/Spice/cmake)
+install(EXPORT SpiceConfig DESTINATION lib/cmake/Spice)
 
 # This makes the project importable from the build directory
 export(TARGETS Spice NAMESPACE Spice:: FILE SpiceConfig.cmake)
-
+set(CMAKE_EXPORT_PACKAGE_REGISTRY ON)
+export(PACKAGE Spice)
