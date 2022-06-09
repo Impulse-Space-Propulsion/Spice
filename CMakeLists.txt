@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
-project(Spice)
+project(Spice LANGUAGES C CXX)
 
 # Include all *.c files from the library
 file(GLOB SPICE_COMMON_SOURCE ${PROJECT_SOURCE_DIR}/src/common/*.c)
@@ -21,16 +21,24 @@ elseif (MINGW)
 elseif (UNIX)
     file(GLOB SPICE_PLATFORM_SOURCE ${PROJECT_SOURCE_DIR}/src/linux/*.c)
     set(INCLUDE_PATH "include/linux")
+else()
+    #Die if no match found
+    fatal_error("Environment not matched to one of: MSVC, APPLE, CYGWIN, MINGW, UNIX")
 endif ()
 
 option(SPICE_BUILD_SHARED_LIBRARY "Build SPICE library as shared library" ON)
+message("Spice Platform Sources: " ${SPICE_PLATFORM_SOURCES})
 
 if (SPICE_BUILD_SHARED_LIBRARY)
     add_library(Spice SHARED ${SPICE_COMMON_SOURCE} ${SPICE_PLATFORM_SOURCE})
 else ()
     add_library(Spice STATIC ${SPICE_COMMON_SOURCE} ${SPICE_PLATFORM_SOURCE})
 endif ()
-set_property(TARGET Spice PROPERTY POSITION_INDEPENDENT_CODE 1)
+
+set_target_properties(Spice 
+    PROPERTIES 
+        WINDOWS_EXPORT_ALL_SYMBOLS TRUE
+        POSITION_INDEPENDENT_CODE TRUE)
 
 target_include_directories(Spice
   PUBLIC
@@ -40,7 +48,6 @@ target_include_directories(Spice
     $<INSTALL_INTERFACE:include>
   PRIVATE
   )
-
 
 
 if (WIN32)
