@@ -26,7 +26,7 @@ else()
     fatal_error("Environment not matched to one of: MSVC, APPLE, CYGWIN, MINGW, UNIX")
 endif ()
 
-option(SPICE_BUILD_SHARED_LIBRARY "Build SPICE library as shared library" ON)
+option(SPICE_BUILD_SHARED_LIBRARY "Build SPICE library as shared library" OFF)
 message("Spice Platform Sources: " ${SPICE_PLATFORM_SOURCES})
 
 if (SPICE_BUILD_SHARED_LIBRARY)
