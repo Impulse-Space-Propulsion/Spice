@@ -4,6 +4,7 @@ project(Spice LANGUAGES C CXX)
 # Include all *.c files from the library
 file(GLOB SPICE_COMMON_SOURCE ${PROJECT_SOURCE_DIR}/src/common/*.c)
 set(INCLUDE_PATH "include")
+file(GLOB SPICE_HEADERS include/*.h)
 
 if (MSVC)
     file(GLOB SPICE_PLATFORM_SOURCE ${PROJECT_SOURCE_DIR}/src/msvc/*.c)
@@ -79,13 +80,24 @@ install(TARGETS Spice EXPORT SpiceConfig
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})  # This is for Windows
 install(DIRECTORY ${INCLUDE_PATH} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${SPICE_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # This makes the project importable from the install directory
 # Put config file in per-project dir (name MUST match), can also
 # just go into 'cmake'.
-install(EXPORT SpiceConfig DESTINATION lib/cmake/Spice)
+install(
+  EXPORT SpiceConfig 
+  DESTINATION lib/cmake/Spice
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/libFC/
+)
+export(
+  TARGETS Spice
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/SpiceTargets.cmake"
+  NAMESPACE Spice::
+)
+install(
+  EXPORT SpiceConfig
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/Spice/
+  NAMESPACE Spice::
+)
 
-# This makes the project importable from the build directory
-export(TARGETS Spice NAMESPACE Spice:: FILE SpiceConfig.cmake)
-set(CMAKE_EXPORT_PACKAGE_REGISTRY ON)
-export(PACKAGE Spice)
